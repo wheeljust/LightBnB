@@ -6,7 +6,10 @@ FROM
   properties
   JOIN property_reviews ON property_id = properties.id
 WHERE
-  city like '%ancouv%'
+  city LIKE '%ancouv%'
+  AND cost_per_night > 40000
+  AND cost_per_night < 50000
+  AND owner_id = 747
 GROUP BY
   properties.id
 HAVING
