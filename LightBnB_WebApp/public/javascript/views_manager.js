@@ -32,7 +32,7 @@ $(() => {
       case 'newReservation':
         const dataTag = `<h4>${data}</h4>`;
         $newReservationForm.appendTo($main);
-        // $("#datatag").empty();
+        $("#datatag").empty();
         $(dataTag).appendTo("#datatag");
         break;
       case 'error': {

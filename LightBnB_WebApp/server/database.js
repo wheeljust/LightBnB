@@ -122,6 +122,34 @@ const getAllReservations = function(guest_id, limit = 10) {
 };
 exports.getAllReservations = getAllReservations;
 
+/**
+ * Adds a reservation to the database for a specific user
+ * @param {{}} reservation an object containing the reservation details
+ * @returns {Promise<{}>} A promise to the reservation
+ */
+const addReservation = function(reservation) {
+  const queryParams = [
+    reservation.start_date,
+    reservation.end_date,
+    reservation.property_id,
+    reservation.guest_id
+  ];
+
+  const queryString = `
+    INSERT INTO reservations 
+      (start_date, end_date, property_id, guest_id)
+    VALUES 
+      ($1, $2, $3, $4) 
+    RETURNING *;`;
+
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows[0])
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+exports.addReservation = addReservation;
+
 /// PROPERTIES
 
 /**
