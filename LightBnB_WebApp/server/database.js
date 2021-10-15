@@ -92,7 +92,7 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function(guest_id, limit = 10) {
+const getFulfilledReservations = function(guest_id, limit = 10) {
   const queryParams = [guest_id, limit];
   let queryString = `
     SELECT
@@ -100,7 +100,7 @@ const getAllReservations = function(guest_id, limit = 10) {
     FROM 
       reservations
       JOIN properties ON reservations.property_id = properties.id
-    JOIN property_reviews ON properties.id = property_reviews.property_id
+      JOIN property_reviews ON properties.id = property_reviews.property_id
     WHERE
       reservations.guest_id = $1
       AND reservations.end_date < NOW() :: date
@@ -108,19 +108,17 @@ const getAllReservations = function(guest_id, limit = 10) {
       properties.id,
       reservations.id
     ORDER BY
-      reservations.start_date DESC
+      reservations.start_date
     LIMIT
       $2;`;
   
   return pool.query(queryString, queryParams)
-    .then(result => {
-      return result.rows;
-    })
+    .then(result => result.rows)
     .catch(err => {
       console.log(err.message);
     });
 };
-exports.getAllReservations = getAllReservations;
+exports.getFulfilledReservations = getFulfilledReservations;
 
 /**
  * Adds a reservation to the database for a specific user
@@ -149,6 +147,59 @@ const addReservation = function(reservation) {
     });
 }
 exports.addReservation = addReservation;
+
+/**
+ * Gets upcoming reservations for one specific guest_id
+ * @param {*} guest_id the id of the user
+ * @param {*} limit number of results to return, default is 10
+ * @return {Promise<[{}]>} a promise to the reservation.
+ */
+const getUpcomingReservations = function(guest_id, limit = 10) {
+  const queryParams = [guest_id, limit];
+  let queryString = `
+    SELECT
+      properties.*, reservations.*, avg(rating) AS average_rating
+    FROM 
+      reservations
+      JOIN properties ON reservations.property_id = properties.id
+      JOIN property_reviews ON properties.id = property_reviews.property_id
+    WHERE
+      reservations.guest_id = $1
+      AND reservations.start_date > now()::date
+    GROUP BY
+      properties.id,
+      reservations.id
+    ORDER BY
+      reservations.start_date
+    LIMIT
+      $2;`;
+  
+  return pool.query(queryString, queryParams)
+    .then(result => result.rows)
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+exports.getUpcomingReservations = getUpcomingReservations;
+
+/**
+ * Updates an existing reservation with ne information
+ * @param {*} reservationId 
+ * @param {*} newReservationData 
+ */
+const updateReservation = function(reservationId, newReservationData) {
+
+}
+exports.updateReservation = updateReservation;
+
+/**
+ * Deletes and existing reservation from the database
+ * @param {*} reservationId 
+ */
+const deleteReservation = function(reservationId) {
+
+}
+exports.deleteReservation = deleteReservation;
 
 /// PROPERTIES
 
