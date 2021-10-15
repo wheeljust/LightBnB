@@ -38,8 +38,15 @@ function getAllListings(params) {
   });
 }
 
-function getAllReservations() {
+function getFulfilledReservations() {
   let url = "/api/reservations";
+  return $.ajax({
+    url,
+  });
+}
+
+function getUpcomingReservations() {
+  let url = "/api/reservations/upcoming";
   return $.ajax({
     url,
   });
