@@ -20,6 +20,11 @@ $(() => {
           <footer class="property-listing__footer">
             <div class="property-listing__rating">${Math.round(property.average_rating * 100) / 100}/5 stars</div>
             <div class="property-listing__price">$${property.cost_per_night/100.0}/night</div>
+            ${isReservation.upcoming ? 
+              `<button id="update-property-${property.id}" class="update-button">Update</button>
+                <button id="delete-property-${property.id}" class="delete-button">Delete</button>
+              ` : ``
+            }
           </footer>
         </section>
       </article>
