@@ -121,40 +121,12 @@ const getFulfilledReservations = function(guest_id, limit = 10) {
 exports.getFulfilledReservations = getFulfilledReservations;
 
 /**
- * Adds a reservation to the database for a specific user
- * @param {{}} reservation an object containing the reservation details
- * @returns {Promise<{}>} A promise to the reservation
- */
-const addReservation = function(reservation) {
-  const queryParams = [
-    reservation.start_date,
-    reservation.end_date,
-    reservation.property_id,
-    reservation.guest_id
-  ];
-
-  const queryString = `
-    INSERT INTO reservations 
-      (start_date, end_date, property_id, guest_id)
-    VALUES 
-      ($1, $2, $3, $4) 
-    RETURNING *;`;
-
-  return pool.query(queryString, queryParams)
-    .then(res => res.rows[0])
-    .catch(err => {
-      console.log(err.message);
-    });
-}
-exports.addReservation = addReservation;
-
-/**
  * Gets upcoming reservations for one specific guest_id
  * @param {*} guest_id the id of the user
  * @param {*} limit number of results to return, default is 10
  * @return {Promise<[{}]>} a promise to the reservation.
  */
-const getUpcomingReservations = function(guest_id, limit = 10) {
+ const getUpcomingReservations = function(guest_id, limit = 10) {
   const queryParams = [guest_id, limit];
   let queryString = `
     SELECT
@@ -181,6 +153,46 @@ const getUpcomingReservations = function(guest_id, limit = 10) {
     });
 }
 exports.getUpcomingReservations = getUpcomingReservations;
+
+const getIndividualReservation = function(reservationId) {
+  const queryParams = [reservationId];
+  const queryString = `SELECT * FROM reservations WHERE reservations.id = $1;`
+
+  return pool.query(queryString, queryParams)
+    .then(result => result.rows[0])
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+exports.getIndividualReservation = getIndividualReservation;
+
+/**
+ * Adds a reservation to the database for a specific user
+ * @param {{}} reservation an object containing the reservation details
+ * @returns {Promise<{}>} A promise to the reservation
+ */
+const addReservation = function(reservation) {
+  const queryParams = [
+    reservation.start_date,
+    reservation.end_date,
+    reservation.property_id,
+    reservation.guest_id
+  ];
+
+  const queryString = `
+    INSERT INTO reservations 
+      (start_date, end_date, property_id, guest_id)
+    VALUES 
+      ($1, $2, $3, $4) 
+    RETURNING *;`;
+
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows[0])
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+exports.addReservation = addReservation;
 
 /**
  * Updates an existing reservation with ne information
