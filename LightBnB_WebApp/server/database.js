@@ -376,10 +376,10 @@ const getReviewsByProperty = function(propertyId) {
   const queryString = `
     SELECT
       property_reviews.id,
-      property_reviews.rating,
-      property_reviews.message,
+      property_reviews.rating AS review_rating,
+      property_reviews.message AS review_text,
       users.name,
-      properties.title,
+      properties.title AS property_title,
       reservations.start_date,
       reservations.end_date
     FROM
