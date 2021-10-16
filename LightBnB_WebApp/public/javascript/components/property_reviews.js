@@ -33,7 +33,7 @@ $(() => {
     $propertyReviews.append(reviewHtml);
     $propertyReviews.append(`<span class="property-reviews__return" href="#">Return to Listings</span>`);
   
-    $('.property-reviews__return').on('click', function() {
+    $(document).on('click', '.property-reviews__return', function() {
       views_manager.show('none');
       views_manager.show('listings');
     })
