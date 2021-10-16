@@ -25,7 +25,7 @@ $(() => {
         <section class="property-review__details">
           <h3>${review_rating}/5 stars</h3>
           <p>Review done by: ${name}</p>
-          <p>Stay from ${moment(start_date).format('ll')} to ${moment(end_date).format('ll')}</p>
+          <p>Stay from ${moment.utc(start_date).format('ll')} to ${moment.utc(end_date).format('ll')}</p>
           <p>${review_text}</p> 
         </section>
       </article>`
