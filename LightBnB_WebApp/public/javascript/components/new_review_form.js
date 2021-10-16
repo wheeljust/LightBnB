@@ -13,6 +13,7 @@ $(() => {
       </select>
       <div id="datatag" class="hidden"></div>
       <button type="submit">Submit Review</button>
+      <a id="reservation-form__cancel" href="#">Cancel</a>
     </form>
   `)
 
