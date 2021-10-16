@@ -199,8 +199,33 @@ exports.addReservation = addReservation;
  * @param {*} reservationId 
  * @param {*} newReservationData 
  */
-const updateReservation = function(reservationId, newReservationData) {
+const updateReservation = function(newReservationData) {
+  const queryParams = [];
+  let queryString = `UPDATE reservations SET `;
 
+  if (newReservationData.start_date) {
+    queryParams.push(`${newReservationData.start_date}`);
+    queryString += `start_date = $${queryParams.length}`;
+  }
+
+  if (newReservationData.end_date) {
+    if (queryParams.length > 0) {
+      queryString += `, `
+    }
+    queryParams.push(`${newReservationData.end_date}`);
+    queryString += `end_date = $${queryParams.length}`;
+  }
+
+  queryParams.push(`${newReservationData.reservation_id}`);
+  queryString += ` WHERE id = $${queryParams.length} RETURNING *;`
+
+  return pool.query(queryString, queryParams)
+    .then(result => {
+      return result.rows[0];
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
 }
 exports.updateReservation = updateReservation;
 
