@@ -10,10 +10,14 @@
 │   │   │   ├── header.js
 │   │   │   ├── login_form.js
 │   │   │   ├── new_property_form.js
+│   │   │   ├── new_reservation_form.js
+│   │   │   ├── new_review_form.js
 │   │   │   ├── property_listing.js
 │   │   │   ├── property_listings.js
+│   │   │   ├── property_reviews.js
 │   │   │   ├── search_form.js
-│   │   │   └── signup_form.js
+│   │   │   ├── signup_form.js
+│   │   │   └── update_reservation_form.js
 │   │   ├── index.js
 │   │   ├── libraries
 │   │   ├── network.js
