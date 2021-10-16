@@ -25,6 +25,9 @@ $(() => {
                 <button id="delete-property-${property.id}" class="delete-button">Delete</button>
               ` : ``
             }
+            <span id="review-details-${property.id}" class="review_details">
+              Browse ${property.review_count} reviews
+            </span>
           </footer>
         </section>
       </article>
