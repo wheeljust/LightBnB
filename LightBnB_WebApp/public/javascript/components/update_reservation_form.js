@@ -214,7 +214,6 @@ $(() => {
     if ((startDate || endDate) && !errorMessage) {
       const reservationId = $(this).find("#datatag-reservation-id").text();
       const dataObj = { start_date: startDate, end_date: endDate, reservation_id: reservationId };
-      console.log(dataObj);
       updateReservation(dataObj)
       .then(() => {
         views_manager.show('none');
