@@ -11,7 +11,7 @@ $(() => {
 
     $(document).on('click', '.review_details', function() {
       const idData = $(this).attr('id').substring(15);
-      console.log(idData);
+      getReviewsByProperty(idData).then(data => console.log(data));
     })
 
   });
