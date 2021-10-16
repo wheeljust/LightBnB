@@ -81,3 +81,10 @@ const updateReservation = function(data) {
     data,
   })
 }
+
+const deleteReservation = function(reservationId) {
+  return $.ajax({
+    method: "DELETE",
+    url: `/api/reservations/${reservationId}`
+  })
+}
