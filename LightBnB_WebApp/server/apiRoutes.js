@@ -57,6 +57,15 @@ module.exports = function(router, database) {
       })
   })
 
+  router.post('/reviews/:reservation_id', (req, res) => {
+    database.addReview(req.body)
+      .then(reviews => res.send(reviews))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      })
+  })
+
   router.post('/properties', (req, res) => {
     const userId = req.session.userId;
     database.addProperty({...req.body, owner_id: userId})

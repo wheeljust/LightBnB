@@ -58,6 +58,21 @@ function getIndividualReservation(reservationId) {
   })
 }
 
+const getReviewsByProperty = function(propertyId) {
+  let url = `/api/reviews/${propertyId}`
+  return $.ajax({
+    url,
+  })
+}
+
+const submitReview = function(data) {
+  return $.ajax({
+    method: "POST",
+    url: `/api/reviews/${data.reservation_id}`,
+    data,
+  });
+}
+
 const submitProperty = function(data) {
   return $.ajax({
     method: "POST",
@@ -86,12 +101,5 @@ const deleteReservation = function(reservationId) {
   return $.ajax({
     method: "DELETE",
     url: `/api/reservations/${reservationId}`
-  })
-}
-
-const getReviewsByProperty = function(propertyId) {
-  let url = `/api/reviews/${propertyId}`
-  return $.ajax({
-    url,
   })
 }
