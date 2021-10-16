@@ -12,9 +12,33 @@ $(() => {
         <option value="5">5 stars</option>
       </select>
       <div id="datatag" class="hidden"></div>
-      <button type="submit">Submit</button>
+      <button type="submit">Submit Review</button>
     </form>
   `)
 
   window.$newReviewForm = $newReviewForm;
+
+  $newReviewForm.on('submit', function(event) {
+    event.preventDefault();
+    const reviewBody = $('#new-review-body').val();
+    const reviewRating = $('#new-review-rating').val();
+    const reservationId = $('#datatag h4').text();
+    
+    // clear our review fields
+    $('#new-review-rating').val("");
+    $("#new-review-body").val("");
+
+    if (reviewRating && reviewBody) {
+      getIndividualReservation(reservationId)
+      .then(data => {
+        const dataObj = {...data, reservation_id: reservationId, message: reviewBody, rating: reviewRating};
+        console.log('new review form file', dataObj);  // test line
+        submitReview(dataObj)
+        .then(result => {
+          views_manager.show('listings');
+        });
+      })
+    }
+  })
+
 });
