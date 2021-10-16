@@ -30,21 +30,31 @@ module.exports = function(router, database) {
       return;      
     }
     database.getUpcomingReservations(userId)
-    .then(reservations => res.send({ reservations }))
-    .catch(e => {
-      console.error(e);
-      res.send(e);
+      .then(reservations => res.send({ reservations }))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
     })
   })
 
   router.get('/reservations/:reservation_id', (req, res) => {
     const reservationId = req.params.reservation_id;
     database.getIndividualReservation(reservationId)
-    .then(reservation => res.send(reservation))
-    .catch(e => {
-      console.error(e);
-      res.send(e);
-    })
+      .then(reservation => res.send(reservation))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      })
+  })
+
+  router.get('/reviews/:property_id', (req, res) => {
+    const propertyId = req.params.property_id;
+    database.getReviewsByProperty(propertyId)
+      .then(reviews => res.send(reviews))
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      })
   })
 
   router.post('/properties', (req, res) => {
