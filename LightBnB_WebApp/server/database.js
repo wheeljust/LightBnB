@@ -96,7 +96,7 @@ const getFulfilledReservations = function(guest_id, limit = 10) {
   const queryParams = [guest_id, limit];
   let queryString = `
     SELECT
-      properties.*, reservations.*, avg(rating) AS average_rating
+      properties.*, reservations.*, avg(rating) AS average_rating, count(rating) as review_count
     FROM 
       reservations
       JOIN properties ON reservations.property_id = properties.id
@@ -130,7 +130,7 @@ exports.getFulfilledReservations = getFulfilledReservations;
   const queryParams = [guest_id, limit];
   let queryString = `
     SELECT
-      properties.*, reservations.*, avg(rating) AS average_rating
+      properties.*, reservations.*, avg(rating) AS average_rating, count(rating) AS review_count
     FROM 
       reservations
       JOIN properties ON reservations.property_id = properties.id
@@ -266,7 +266,7 @@ const getAllProperties = function(options, limit = 10) {
       count(property_reviews.rating) AS review_count
     FROM
       properties
-      JOIN property_reviews ON property_id = properties.id `;
+      LEFT JOIN property_reviews ON property_id = properties.id `;
   
   if (options.city) {
     // remove first and last letter to avoid search issues
