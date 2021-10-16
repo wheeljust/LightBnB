@@ -122,8 +122,8 @@ exports.getFulfilledReservations = getFulfilledReservations;
 
 /**
  * Gets upcoming reservations for one specific guest_id
- * @param {*} guest_id the id of the user
- * @param {*} limit number of results to return, default is 10
+ * @param {string} guest_id the id of the user
+ * @param {integer} limit number of results to return, default is 10
  * @return {Promise<[{}]>} a promise to the reservation.
  */
  const getUpcomingReservations = function(guest_id, limit = 10) {
@@ -154,6 +154,11 @@ exports.getFulfilledReservations = getFulfilledReservations;
 }
 exports.getUpcomingReservations = getUpcomingReservations;
 
+/**
+ * 
+ * @param {integer} reservationId 
+ * @returns {Promise<{}>} A promise to the reservation
+ */
 const getIndividualReservation = function(reservationId) {
   const queryParams = [reservationId];
   const queryString = `SELECT * FROM reservations WHERE reservations.id = $1;`
@@ -195,9 +200,9 @@ const addReservation = function(reservation) {
 exports.addReservation = addReservation;
 
 /**
- * Updates an existing reservation with ne information
- * @param {*} reservationId 
- * @param {*} newReservationData 
+ * Updates an existing reservation with new start or end dates (or both)
+ * @param {{}} newReservationData an object containing reservation_id and new reservation date(s)
+ * @returns {Promise<{}>} A promise to the reservation
  */
 const updateReservation = function(newReservationData) {
   const queryParams = [];
@@ -231,10 +236,15 @@ exports.updateReservation = updateReservation;
 
 /**
  * Deletes and existing reservation from the database
- * @param {*} reservationId 
+ * @param {integer} reservationId
+ * @returns {Promise<{}>} A promise to the reservation
  */
-const deleteReservation = function(reservationId) {
-
+ const deleteReservation = function(reservationId) {
+  const queryParams = [reservationId];
+  const queryString = `DELETE FROM reservations WHERE id = $1`;
+  return pool.query(queryString, queryParams)
+    .then(() => console.log("Successfully deleted!"))
+    .catch(() => console.error(err));
 }
 exports.deleteReservation = deleteReservation;
 
@@ -243,7 +253,7 @@ exports.deleteReservation = deleteReservation;
 /**
  * Get all properties.
  * @param {{}} options An object containing query options.
- * @param {*} limit The number of results to return.
+ * @param {integer} limit The number of results to return.
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function(options, limit = 10) {
