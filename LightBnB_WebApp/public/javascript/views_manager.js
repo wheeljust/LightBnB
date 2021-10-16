@@ -4,7 +4,6 @@ $(() => {
 
   window.views_manager = {};
 
-    // added this optional data field to send over the id field to add a new reservation!
   window.views_manager.show = function(item, data = '') {
     $newPropertyForm.detach();
     $propertyListings.detach();
