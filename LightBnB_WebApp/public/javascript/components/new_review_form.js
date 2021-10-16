@@ -23,21 +23,38 @@ $(() => {
     const reviewBody = $('#new-review-body').val();
     const reviewRating = $('#new-review-rating').val();
     const reservationId = $('#datatag h4').text();
+    let errorMessage = "";
+
+    if (!reviewBody) {
+      errorMessage = "Please provide some details about your stay before submitting your review";
+    }
+
+    if (!reviewRating) {
+      errorMessage = "Please provide a rating before submitting your review";
+    }
     
     // clear our review fields
     $('#new-review-rating').val("");
     $("#new-review-body").val("");
 
-    if (reviewRating && reviewBody) {
+    if (reviewRating && reviewBody && !errorMessage) {
       getIndividualReservation(reservationId)
       .then(data => {
         const dataObj = {...data, reservation_id: reservationId, message: reviewBody, rating: reviewRating};
-        console.log('new review form file', dataObj);  // test line
         submitReview(dataObj)
         .then(result => {
           views_manager.show('listings');
         });
       })
+    } else {
+      const dataObj = {
+        id: $(this).find('#datatag-reservation-id').text(),
+        start_date: $(this).find('#datatag-start-date').text(),
+        end_date: $(this).find('#datatag-end-date').text(),
+        property_id: $(this).find('#datatag-property-id').text(),
+        error_message: errorMessage
+      }
+      views_manager.show('newReview', dataObj);
     }
   })
 

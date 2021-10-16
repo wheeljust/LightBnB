@@ -234,8 +234,6 @@ $(() => {
         views_manager.show('listings');
       })
     } else {
-      console.log(errorMessage);
-      // we can redisplay the form by pulling the information in the datatag!
       const dataObj = {
         id: $(this).find('#datatag-reservation-id').text(),
         start_date: $(this).find('#datatag-start-date').text(),

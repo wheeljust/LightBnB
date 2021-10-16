@@ -16,7 +16,9 @@ $(() => {
     $newReviewForm.detach();
     $('#reservation-details').detach();
     $('#review-details').detach();
-
+    $('#update-error-message').detach();
+    $('#review-error-message').detach();
+    
     let datatag = "";
 
     switch (item) {
@@ -49,10 +51,19 @@ $(() => {
             <h4>End date: ${moment.utc(data.end_date).format("MMMM DD, YYYY")}</h4>
           </div>
           `;
+
+        const reviewErrorMessage = data.error_message ? `<h4 id="review-error-message">${data.error_message}</h4>` : ``;
+
         $(reviewDetails).appendTo($main);
         $newReviewForm.appendTo($main);
         $("#datatag").empty();
         $(dataTag).appendTo("#datatag");
+        $(reviewErrorMessage).appendTo($main);
+        if (reviewErrorMessage) {
+          setTimeout(() => {
+            $('#review-error-message').remove();
+          }, 2000);
+        }
         break;
       case 'showReviews':
         getReviewsByProperty(data)
@@ -81,13 +92,18 @@ $(() => {
           </div>
         `;
 
-        const errorMessage = data.error_message ? `<h4>${data.error_message}</h4>` : ``;
+        const updateErrorMessage = data.error_message ? `<h4 id="update-error-message">${data.error_message}</h4>` : ``;
 
         $(reservationDetails).appendTo($main);
         $updateReservationForm.appendTo($main);
         $("#datatag").empty();
         $(dataTag).appendTo("#datatag");
-        $(errorMessage).appendTo('#error-message');
+        $(updateErrorMessage).appendTo($main);
+        if (updateErrorMessage) {
+          setTimeout(() => {
+            $('#update-error-message').remove();
+          }, 2000);
+        }
         break;
       case 'error': {
         const $error = $(`<p>${arguments[1]}</p>`);
