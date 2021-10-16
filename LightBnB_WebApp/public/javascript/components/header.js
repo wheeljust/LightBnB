@@ -90,6 +90,7 @@ $(() => {
   $("header").on('click', '.logout_button', () => {
     logOut().then(() => {
       header.update(null);
+      views_manager.show('logIn');
     });
   });
 
