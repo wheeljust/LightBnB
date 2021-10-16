@@ -73,5 +73,17 @@ module.exports = function(router, database) {
     } 
   })
 
+  router.post('/reservations/:reservation_id', (req, res) => {
+    const reservationId = req.params.reservation_id;
+    database.updateReservation({...req.body, reservation_id: reservationId})
+      .then(reservation => {
+        res.send(reservation)
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e);
+      })
+  })
+
   return router;
 }

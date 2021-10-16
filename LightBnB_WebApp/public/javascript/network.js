@@ -51,6 +51,13 @@ function getUpcomingReservations() {
   });
 }
 
+function getIndividualReservation(reservationId) {
+  let url = `/api/reservations/${reservationId}`
+  return $.ajax({
+    url,
+  })
+}
+
 const submitProperty = function(data) {
   return $.ajax({
     method: "POST",
@@ -67,9 +74,10 @@ const submitReservation = function(data) {
   })
 }
 
-function getIndividualReservation(reservationId) {
-  let url = `/api/reservations/${reservationId}`
+const updateReservation = function(data) {
   return $.ajax({
-    url,
+    method: "POST",
+    url: `/api/reservations/${data.reservation_id}`,
+    data,
   })
 }
