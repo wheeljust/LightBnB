@@ -35,13 +35,16 @@ $(() => {
     if (isReservation) {
       $('.update-button').on('click', function() {
         const idData = $(this).attr('id').substring(16);
-        getIndividualReservation(idData).then(data => {
-          views_manager.show("updateReservation", data);       
-        });       
+        getIndividualReservation(idData)
+          .then(data => {
+            views_manager.show("updateReservation", data);       
+          });       
       })
       $('.delete-button').on('click', function() {
         const idData = $(this).attr('id').substring(16);
-        console.log(`delete ${idData}`);          
+        deleteReservation(idData);
+        $currentReservation = $(this).closest('article');
+        $currentReservation.hide('slow', function(){ $currentReservation.remove(); });;
       })
     }
   }
