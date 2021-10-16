@@ -48,7 +48,11 @@ $(() => {
       })
       $('.add-review-button').on('click', function() {
         const idData = $(this).attr('id').substring(11);
-        views_manager.show("newReview", idData);
+        getIndividualReservation(idData)
+        .then(data => {
+          console.log(data);
+          views_manager.show("newReview", data);     
+        });  
       })
     }
   }

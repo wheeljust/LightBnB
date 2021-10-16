@@ -15,6 +15,7 @@ $(() => {
     $propertyReviews.detach();
     $newReviewForm.detach();
     $('#reservation-details').detach();
+    $('#review-details').detach();
 
     let datatag = "";
 
@@ -35,7 +36,20 @@ $(() => {
         $signUpForm.appendTo($main);
         break;
       case 'newReview':
-        dataTag = `<h4>${data}</h4>`;
+        dataTag = `
+          <span id="datatag-reservation-id">${data.id}</span>
+          <span id="datatag-start-date">${data.start_date}</span>
+          <span id="datatag-end-date">${data.end_date}</span>
+          <span id="datatag-property-id">${data.property_id}</span>
+          `;
+        const reviewDetails = `
+          <div id="review-details">
+            <h3>Your Past Reservation Details</h3>
+            <h4>Start date: ${moment.utc(data.start_date).format("MMMM DD, YYYY")}</h4>
+            <h4>End date: ${moment.utc(data.end_date).format("MMMM DD, YYYY")}</h4>
+          </div>
+          `;
+        $(reviewDetails).appendTo($main);
         $newReviewForm.appendTo($main);
         $("#datatag").empty();
         $(dataTag).appendTo("#datatag");
