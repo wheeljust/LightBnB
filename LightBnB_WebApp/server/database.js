@@ -369,3 +369,36 @@ const addProperty = function(property) {
   
 };
 exports.addProperty = addProperty;
+
+// REVIEWS
+
+const getReviewsByProperty = function(propertyId) {
+  const queryString = `
+    SELECT
+      property_reviews.id,
+      property_reviews.rating,
+      property_reviews.message,
+      users.name,
+      properties.title,
+      reservations.start_date,
+      reservations.end_date
+    FROM
+      property_reviews
+      JOIN reservations ON reservations.id = property_reviews.reservation_id
+      JOIN properties ON properties.id = property_reviews.property_id
+      JOIN users ON users.id = property_reviews.guest_id
+    WHERE
+      properties.id = $1
+    ORDER BY
+      reservations.start_date DESC;`;
+
+  const queryParams = [propertyId];
+
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows)
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+
+exports.getReviewsByProperty = getReviewsByProperty;
