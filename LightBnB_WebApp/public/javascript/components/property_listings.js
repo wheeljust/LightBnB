@@ -46,6 +46,10 @@ $(() => {
         $currentReservation = $(this).closest('article');
         $currentReservation.hide('slow', function(){ $currentReservation.remove(); });;
       })
+      $('.add-review-button').on('click', function() {
+        const idData = $(this).attr('id').substring(11);
+        views_manager.show("newReview", idData);
+      })
     }
   }
   window.propertyListings.addProperties = addProperties;
