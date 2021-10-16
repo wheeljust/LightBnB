@@ -402,3 +402,32 @@ const getReviewsByProperty = function(propertyId) {
 }
 
 exports.getReviewsByProperty = getReviewsByProperty;
+
+/**
+ * Add a review to the database for a specific reservation associated with a property
+ * @param {{}} review an object containing the reservation and review information
+ * @return {Promise<{}>} A promise to the review
+ */
+const addReview = function(review) {
+  const queryParams = [
+    review.guest_id,
+    review.property_id,
+    review.reservation_id,
+    parseInt(review.rating),
+    review.message
+  ];
+
+  const queryString = `
+    INSERT INTO property_reviews
+      (guest_id, property_id, reservation_id, rating, message)
+    VALUES 
+      ($1, $2, $3, $4, $5) 
+    RETURNING *;`;
+
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows[0])
+    .catch(err => {
+      console.log(err.message);
+    });
+}
+exports.addReview = addReview;
