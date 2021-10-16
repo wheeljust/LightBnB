@@ -372,6 +372,11 @@ exports.addProperty = addProperty;
 
 // REVIEWS
 
+/**
+ * Get all the reviews for one property
+ * @param {string} propertyId
+ * @returns {Promise<{}>} A promise to the review
+ */
 const getReviewsByProperty = function(propertyId) {
   const queryString = `
     SELECT
@@ -400,7 +405,6 @@ const getReviewsByProperty = function(propertyId) {
       console.log(err.message);
     });
 }
-
 exports.getReviewsByProperty = getReviewsByProperty;
 
 /**
